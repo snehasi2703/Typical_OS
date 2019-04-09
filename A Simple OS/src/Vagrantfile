@@ -1,0 +1,22 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+Vagrant.configure(2) do |config|
+  # All Vagrant configuration is done here. The most common configuration
+  # options are documented and commented below. 
+
+  config.vm.box = "mrgcastle/ubuntu-lucid32"
+  config.vm.box_version = "1.0.0.0"
+
+  #update ubuntu lucid32 with path change
+  #also install essential qemu and grub 
+  $script = %Q{
+    sudo sed -i.bak -r 's/(us.archive|security).ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+    sudo apt-get update
+    sudo apt-get install nasm make build-essential grub qemu zip -y
+  }
+
+  
+  config.vm.provision :shell, :inline => $script
+end
